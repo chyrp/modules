@@ -160,7 +160,6 @@
                                 array("showOnFront" => true,
                                       "likeWithText" => false,
                                       "likeImage" => $config->chyrp_url."/modules/likes/images/like.png",
-                                      "isCacherOn" => false,
                                       "likeText" => $likeText)));
         }
 

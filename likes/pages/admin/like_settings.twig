@@ -18,7 +18,7 @@
                     <p>
                         <label for="likeImage">${ "Like Button Image" | translate("likes") }</label>
                         <select name="likeImage">
-                            {% for key, val in modules['likes'].getLikeImages | items %}
+                            {% for key, val in modules['likes'].get_like_images | items %}
                             <option value="$val" ${ val | option_selected(site.module_like.likeImage) }>$key</option>
                             {% endfor %}
                         </select>

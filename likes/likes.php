@@ -34,7 +34,6 @@
                                 array("showOnFront" => isset($_POST['showOnFront']),
                                       "likeWithText" => isset($_POST['likeWithText']),
                                       "likeImage" => $_POST['likeImage'],
-                                      "isCacherOn" => isset($_POST['isCacherOn']),
                                       "likeText" => $likeText)));
 
             if (!in_array(false, $set))
@@ -55,84 +54,14 @@
             $like = new Like($request, Visitor::current()->id);
         }
 
-        public function head() {
-?>
-        <link rel="stylesheet" href="<?php echo Config::current()->chyrp_url; ?>/modules/likes/style.css" type="text/css" media="screen" />
-        <script type="text/javascript">
-        <?php $this->likesJS(); ?>
-        </script>
-<?php
+        static function stylesheets($styles) {
+            $styles[] = Config::current()->chyrp_url."/modules/likes/style.css";
+            return $styles;
         }
 
-        public static function likesJS(){
-        ?>//<script>
-        	var likes = {};
-        	likes.action = "like";
-        	likes.didPrevFinish = true;
-        	likes.makeCall = function(post_id, callback, isUnlike) {
-        		if (!this.didPrevFinish) return false;
-        		if (isUnlike == true) this.action = "unlike"; else this.action = "like";
-        		params = {};
-        		params["action"] = this.action;
-        		params["post_id"] = post_id;
-        		jQuery.ajax({
-        			type: "POST",
-        			url: "<?php echo Config::current()->chyrp_url; ?>/includes/ajax.php",
-        			data: params,
-        			beforeSend: function() {
-            			this.didPrevFinish = false;	
-        			},
-        			success:function(response){
-        				if(response.success == true) {
-        					callback(response);
-        				}
-        				else {
-        					likes.log("unsuccessful request, response from server:"+ response)
-        				}
-        			},
-        			error:function (xhr, ajaxOptions, thrownError){
-                        likes.log('error in AJAX request.');
-        				likes.log('xhrObj:'+xhr);
-        				likes.log('thrownError:'+thrownError);
-        				likes.log('ajaxOptions:'+ajaxOptions);
-                    },
-        			complete:function() {
-        				this.didPrevFinish=true;
-        			},
-        			dataType:"json",
-        			cache:false
-        		})
-        	}
-        	likes.like = function(post_id) {
-        		likes.log("like click for post-"+post_id)
-        		$("#likes_post-"+post_id+" a.like").fadeTo(500,.2)
-        		this.makeCall(post_id, function(response) {
-        			var postDom = $("#likes_post-"+post_id)
-        			postDom.children("span.text").html(response.likeText)
-        			var thumbImg = postDom.children("a.like").children("img")
-                    postDom.children("a.like").attr('title',"").removeAttr('href').text("").addClass("liked").removeClass("like")
-        			thumbImg.appendTo(postDom.children("a.liked").eq(0))
-        			postDom.children("a.liked").fadeTo("500",.80)
-        			postDom.find(".like").hide("fast")
-        			postDom.children("div.unlike").show("fast")
-        		}, false)
-        	}
-            likes.unlike = function(post_id) {
-            	likes.log("unlike click for post-"+post_id)
-            	$("#likes_post-"+post_id+" a.liked").fadeTo(500,.2)
-            	this.makeCall(post_id, function(response) {
-            		var postDom = $("#likes_post-"+post_id)
-            		postDom.children("span.text").html(response.likeText)
-            		postDom.children("a.liked").attr("href","javascript:likes.like("+post_id+")").addClass("like").removeClass("liked").fadeTo("500",1)
-            		postDom.children("div.unlike").hide("fast")
-            		postDom.find(".like").show("fast")
-            	}, true)
-            }
-        	likes.log = function(obj){
-        		if(typeof console != "undefined")console.log(obj);
-        	}
-        </script>
-        <?php
+        static function scripts($scripts) {
+            $scripts[] = Config::current()->chyrp_url."/modules/likes/javascript.php";
+            return $scripts;
         }
 
         static function ajax() {
@@ -181,11 +110,6 @@
                 	default: throw new Exception("invalid action");
                 }
 
-                if ($likeSetting["isCacherOn"] == "true") {
-                        $GLOBALS["super_cache_enabled"] = 1;
-                        $responseObj["cacheCleared"] = true;
-                        wp_cache_post_change((int)$_REQUEST["post_id"]);
-                }
                 $responseObj["likeText"] = $likeText;
             }
             catch(Exception $e) {
@@ -285,7 +209,7 @@
         }
 */
 
-        public function getLikeImages() {
+        public function get_like_images() {
             $imagesDir = MODULES_DIR."/likes/images/";
             $images = glob($imagesDir . "*.{jpg,jpeg,png,gif}", GLOB_BRACE);
 
