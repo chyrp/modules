@@ -192,9 +192,9 @@
             }
 
             if ($likeSetting["likeWithText"]) {
-                $returnStr.= "<div class='like' ".($hasPersonLiked ? 'style="display:none"' : "")."><a href=\"javascript:likes.like($post->id);\">".$likeSetting["likeText"][6]."</a></div>";
+                $returnStr.= " <a class='like' ".($hasPersonLiked ? 'style="display:none"' : "")." href=\"javascript:likes.like($post->id);\">(".$likeSetting["likeText"][6].")</a>";
                 if ($visitor->group->can("unlike_post"))
-                    $returnStr.= "<div class='unlike' ".($hasPersonLiked ? 'style="display:block"' : "")."><a href=\"javascript:likes.unlike($post->id);\">".$likeSetting["likeText"][7]."</a></div>"; # $this->text_default[7] = "Unlike";
+                    $returnStr.= "<a class='unlike' ".($hasPersonLiked ? 'style="display:inline"' : "")." href=\"javascript:likes.unlike($post->id);\">(".$likeSetting["likeText"][7].")</a>"; # $this->text_default[7] = "Unlike";
             }
 
             $returnStr.= "</div>";
