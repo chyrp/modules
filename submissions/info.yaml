@@ -4,7 +4,7 @@ version: 1.0
 description: Add feature to allow visitors submit content for your moderation.
 author:
   name: Chyrp Team
-  url: http://chyrp.com/
+  url: http://chyrp.net/
 conflicts:
 notifications:
   - Please remember to update the permission settings for each group.

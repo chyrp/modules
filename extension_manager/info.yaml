@@ -3,6 +3,6 @@ url: http://chyrp.net
 version: 1.0
 description: Allows you to easily install extensions from the chyrp site.
 author:
-  name: the Chyrp team
-  url: http://chyrp.net
+  name: Chyrp Team
+  url: http://chyrp.net/
 conflicts:
